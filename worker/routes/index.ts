@@ -4,11 +4,11 @@ import { adminRoutes } from "./admin-routes";
 import { aiRoutes } from "./ai-routes";
 import { authRoutes } from "./auth-routes";
 import { sessionsRoutes } from "./sessions";
-import { agentsRoutes } from "./agents";
+import { agentRoutes } from "./agent-routes";
 
 export const apiRoutes = new Hono<HonoContext>()
   .route("/admin", adminRoutes)
   .route("/ai", aiRoutes)
   .route("/auth", authRoutes)
   .route("/sessions", sessionsRoutes)
-  .route("/agents", agentsRoutes)
+  .route("/agents", agentRoutes)
