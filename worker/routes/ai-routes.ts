@@ -1,4 +1,3 @@
-import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import type { UIMessage } from "ai";
 import { convertToModelMessages, createIdGenerator, streamText } from "ai";
@@ -7,56 +6,41 @@ import { Hono } from "hono";
 import { authenticatedOnly } from "../middleware/auth";
 import type { HonoContext } from "../types";
 
-// Model configuration mapping
+// OpenRouter free models configuration
 const MODEL_CONFIG = {
-  // OpenAI models
-  "gpt-5": "gpt-5",
-  "gpt-5-codex": "gpt-5-codex",
-  "gpt-5-mini": "gpt-5-mini",
-  "gpt-5-nano": "gpt-5-nano",
-  // Anthropic models
-  "claude-4": "claude-4",
-  "claude-4.5-sonnet": "claude-4.5-sonnet",
+  "meta-llama/llama-3.2-3b-instruct:free": "meta-llama/llama-3.2-3b-instruct:free",
+  "google/gemma-2-9b-it:free": "google/gemma-2-9b-it:free",
+  "microsoft/phi-3-mini-128k-instruct:free": "microsoft/phi-3-mini-128k-instruct:free",
+  "meta-llama/llama-3.1-8b-instruct:free": "meta-llama/llama-3.1-8b-instruct:free",
+  "nousresearch/hermes-3-llama-3.1-405b:free": "nousresearch/hermes-3-llama-3.1-405b:free",
+  "google/gemini-flash-1.5:free": "google/gemini-flash-1.5:free",
 } as const;
 
 type ModelKey = keyof typeof MODEL_CONFIG;
 
 interface GetModelProviderOptions {
   modelName: string;
-  gatewayUrl: string;
-  gatewayKey: string;
+  apiKey: string;
 }
 
 // Helper to get model provider and configuration
 const getModelProvider = ({
   modelName,
-  gatewayUrl,
-  gatewayKey,
+  apiKey,
 }: GetModelProviderOptions) => {
   const actualModel = MODEL_CONFIG[modelName as ModelKey] || modelName;
 
-  // Determine provider based on model name
-  if (modelName.startsWith("gpt") || modelName.startsWith("o1")) {
-    const openaiProvider = createOpenAICompatible({
-      baseURL: gatewayUrl,
-      apiKey: gatewayKey,
-      name: "gpt-5",
-    });
-    return openaiProvider(actualModel);
-  } else if (modelName.startsWith("claude")) {
-    const anthropicProvider = createAnthropic({
-      baseURL: gatewayUrl,
-      apiKey: gatewayKey,
-    });
-    return anthropicProvider(actualModel);
-  }
-
-  // Default to OpenAI
+  // OpenRouter is OpenAI-compatible, so we use createOpenAICompatible for all models
   const openaiProvider = createOpenAICompatible({
-    baseURL: gatewayUrl,
-    apiKey: gatewayKey,
-    name: "gpt-5",
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: apiKey,
+    name: "openrouter",
+    headers: {
+      "HTTP-Referer": "https://localhost:5173", // Required for OpenRouter free tier
+      "X-Title": "AI Chat App", // Required for OpenRouter free tier
+    },
   });
+  
   return openaiProvider(actualModel);
 };
 
@@ -67,7 +51,7 @@ export const aiRoutes = new Hono<HonoContext>()
     try {
       const body = await c.req.json();
 
-      const { messages, model = "gpt-5-nano" } = body as {
+      const { messages, model = "meta-llama/llama-3.2-3b-instruct:free" } = body as {
         messages: UIMessage[];
         model?: string;
       };
@@ -76,21 +60,18 @@ export const aiRoutes = new Hono<HonoContext>()
         return c.json({ error: "Messages array is required" }, 400);
       }
 
-      // Get gateway configuration from environment
-      const gatewayUrl =
-        c.env.RUNABLE_GATEWAY_URL || "https://api.runable.com/gateway/v1";
-      const gatewayKey = c.env.RUNABLE_SECRET!;
+      // Get OpenRouter API key from environment
+      const apiKey = c.env.OPENROUTER_API_KEY!;
 
-      if (!gatewayKey) {
-        console.error("RUNABLE_SECRET not configured");
-        return c.json({ error: "RUNABLE Gateway not configured" }, 500);
+      if (!apiKey) {
+        console.error("OPENROUTER_API_KEY not configured");
+        return c.json({ error: "OpenRouter API not configured" }, 500);
       }
 
       // Get the appropriate model provider
       const modelProvider = getModelProvider({
         modelName: model as ModelKey,
-        gatewayUrl,
-        gatewayKey,
+        apiKey,
       });
 
       // Convert UIMessages to ModelMessages for streamText
@@ -147,40 +128,40 @@ export const aiRoutes = new Hono<HonoContext>()
     return c.json({
       models: [
         {
-          id: "gpt-5",
-          name: "GPT-5",
-          provider: "openai",
-          description: "Latest GPT-5 model with advanced reasoning",
+          id: "meta-llama/llama-3.2-3b-instruct:free",
+          name: "Llama 3.2 3B Instruct",
+          provider: "meta",
+          description: "Meta's latest 3B parameter model with instruction following capabilities",
         },
         {
-          id: "gpt-5-codex",
-          name: "GPT-5 Codex",
-          provider: "openai",
-          description: "Specialized for code generation and analysis",
+          id: "google/gemma-2-9b-it:free",
+          name: "Gemma 2 9B IT",
+          provider: "google",
+          description: "Google's Gemma 2 model with 9B parameters, optimized for instruction following",
         },
         {
-          id: "gpt-5-mini",
-          name: "GPT-5 Mini",
-          provider: "openai",
-          description: "Faster, cost-effective version of GPT-5",
+          id: "microsoft/phi-3-mini-128k-instruct:free",
+          name: "Phi-3 Mini 128K",
+          provider: "microsoft",
+          description: "Microsoft's Phi-3 model with 128K context window, optimized for instructions",
         },
         {
-          id: "gpt-5-nano",
-          name: "GPT-5 Nano",
-          provider: "openai",
-          description: "Ultra-fast model for simple tasks",
+          id: "meta-llama/llama-3.1-8b-instruct:free",
+          name: "Llama 3.1 8B Instruct",
+          provider: "meta",
+          description: "Meta's Llama 3.1 model with 8B parameters and instruction tuning",
         },
         {
-          id: "claude-4",
-          name: "Claude 4",
-          provider: "anthropic",
-          description: "Advanced Claude model with superior reasoning",
+          id: "nousresearch/hermes-3-llama-3.1-405b:free",
+          name: "Hermes 3 Llama 3.1 405B",
+          provider: "nousresearch",
+          description: "Nous Research's Hermes 3 based on Llama 3.1 405B, fine-tuned for chat",
         },
         {
-          id: "claude-4.5-sonnet",
-          name: "Claude 4.5 Sonnet",
-          provider: "anthropic",
-          description: "Latest Claude Sonnet with enhanced capabilities",
+          id: "google/gemini-flash-1.5:free",
+          name: "Gemini Flash 1.5",
+          provider: "google",
+          description: "Google's Gemini Flash model with 1.5M context window, fast and efficient",
         },
       ],
     });
