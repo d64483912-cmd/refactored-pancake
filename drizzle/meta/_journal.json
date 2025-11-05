@@ -8,6 +8,13 @@
       "when": 1760705761704,
       "tag": "0000_wonderful_mathemanic",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1762383583211,
+      "tag": "0001_rainy_kingpin",
+      "breakpoints": true
     }
   ]
 }
