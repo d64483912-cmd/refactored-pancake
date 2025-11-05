@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Sparkles, Plus, Settings, Trash2, Database, Mail, Github, Calendar, Api } from 'lucide-react';
+import { Sparkles, Plus, Trash2, Database, Mail, Github, Calendar, Api } from 'lucide-react';
 
 interface Session {
   id: string;
@@ -31,6 +31,7 @@ interface Integration {
 
 interface SessionDashboardProps {
   sessionId: string;
+  agentType?: string;
 }
 
 const integrationIcons = {
@@ -48,7 +49,7 @@ const statusColors = {
   error: 'bg-red-100 text-red-800',
 };
 
-export function SessionDashboard({ sessionId }: SessionDashboardProps) {
+export function SessionDashboard({ sessionId, agentType }: SessionDashboardProps) {
   const [showAddIntegration, setShowAddIntegration] = useState(false);
   
   const { data: sessionData, refetch, isLoading: sessionLoading } = useQuery({
@@ -149,7 +150,7 @@ export function SessionDashboard({ sessionId }: SessionDashboardProps) {
   }
 
   const session = sessionData?.session as Session;
-  const integrations = sessionData?.integrations as Integration[] || [];
+  const integrations = (sessionData?.integrations as Integration[]) || [];
   const metadata = session?.metadata || {};
   const messages = messagesData?.messages || [];
 
@@ -158,18 +159,14 @@ export function SessionDashboard({ sessionId }: SessionDashboardProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">{session?.title}</h2>
+          <h2 className="text-2xl font-bold">{session?.title || 'Session Dashboard'}</h2>
+          <p className="text-muted-foreground mt-1 capitalize">{agentType ? `${agentType.replace('_', ' ')} Agent` : ''}</p>
           {session?.description && (
             <p className="text-muted-foreground mt-1">{session.description}</p>
           )}
         </div>
         <div className="flex gap-2">
-          <Button
-            onClick={handleExtractContext}
-            disabled={extractContextMutation.isPending}
-            variant="outline"
-            size="sm"
-          >
+          <Button onClick={handleExtractContext} disabled={extractContextMutation.isPending} variant="outline" size="sm">
             {extractContextMutation.isPending ? (
               <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full mr-2" />
             ) : (
@@ -177,11 +174,7 @@ export function SessionDashboard({ sessionId }: SessionDashboardProps) {
             )}
             Extract Context
           </Button>
-          <Button
-            onClick={() => setShowAddIntegration(true)}
-            variant="outline"
-            size="sm"
-          >
+          <Button onClick={() => setShowAddIntegration(true)} variant="outline" size="sm">
             <Plus className="h-4 w-4 mr-2" />
             Add Integration
           </Button>
@@ -224,7 +217,6 @@ export function SessionDashboard({ sessionId }: SessionDashboardProps) {
         </Card>
       </div>
 
-      {/* Requirements and Tech Stack */}
       {metadata.requirements?.length > 0 && (
         <Card>
           <CardHeader>
@@ -301,7 +293,6 @@ export function SessionDashboard({ sessionId }: SessionDashboardProps) {
         </Card>
       )}
 
-      {/* Integrations */}
       <Card>
         <CardHeader>
           <CardTitle>Integrations</CardTitle>
@@ -319,20 +310,12 @@ export function SessionDashboard({ sessionId }: SessionDashboardProps) {
                       <Icon className="h-5 w-5" />
                       <div>
                         <div className="font-medium">{integration.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {integration.integrationType}
-                        </div>
+                        <div className="text-sm text-muted-foreground">{integration.integrationType}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge className={statusColors[integration.status]}>
-                        {integration.status}
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteIntegration(integration.id)}
-                      >
+                      <Badge className={statusColors[integration.status]}>{integration.status}</Badge>
+                      <Button variant="ghost" size="sm" onClick={() => handleDeleteIntegration(integration.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
