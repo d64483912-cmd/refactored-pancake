@@ -5,58 +5,75 @@ import BillingSuccess from "@/pages/billing-success";
 import Chat from "@/pages/chat";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
+import SessionDashboard from "@/components/session/SessionDashboard";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
+import Navigation from "@/components/Navigation";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navigation />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
 
-        {/* Authentication routes */}
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+            {/* Authentication routes */}
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
 
-        {/* Billing routes */}
-        <Route
-          path="/billing"
-          element={
-            <RequireAuth>
-              <Billing />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/billing/success"
-          element={
-            <RequireAuth>
-              <BillingSuccess />
-            </RequireAuth>
-          }
-        />
+            {/* Billing routes */}
+            <Route
+              path="/billing"
+              element={
+                <RequireAuth>
+                  <Billing />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/billing/success"
+              element={
+                <RequireAuth>
+                  <BillingSuccess />
+                </RequireAuth>
+              }
+            />
 
-        {/* Chat routes */}
-        <Route
-          path="/chat"
-          element={
-            <RequireAuth>
-              <Chat />
-            </RequireAuth>
-          }
-        />
+            {/* Chat routes */}
+            <Route
+              path="/chat"
+              element={
+                <RequireAuth>
+                  <Chat />
+                </RequireAuth>
+              }
+            />
 
-        {/* Admin Dashboard */}
-        <Route
-          path="/admin"
-          element={
-            <RequireAdmin>
-              <Dashboard />
-            </RequireAdmin>
-          }
-        />
-      </Routes>
+            {/* Session Dashboard */}
+            <Route
+              path="/sessions"
+              element={
+                <RequireAuth>
+                  <SessionDashboard />
+                </RequireAuth>
+              }
+            />
+
+            {/* Admin Dashboard */}
+            <Route
+              path="/admin"
+              element={
+                <RequireAdmin>
+                  <Dashboard />
+                </RequireAdmin>
+              }
+            />
+          </Routes>
+        </main>
+      </div>
     </BrowserRouter>
   );
 }
