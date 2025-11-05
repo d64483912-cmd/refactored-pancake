@@ -1,13 +1,13 @@
 {
   "site": {
-    "name": "Minimal Starter",
-    "tagline": "Your Creative Canvas",
-    "description": "A clean, minimal starter template providing the perfect foundation for your next project. Built with modern tools and ready for your creativity.",
+    "name": "Godmode",
+    "tagline": "Automate repetitive tasks",
+    "description": "Teach AI to do your repetitive grunt work",
     "ogImage": "/og-image.png",
     "twitterHandle": "",
     "contact": {
-      "email": "contact@example.com",
-      "company": "Your Company",
+      "email": "contact@godmode.space",
+      "company": "Godmode",
       "address": ""
     },
     "legal": {
