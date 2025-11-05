@@ -6,14 +6,14 @@ export interface AgentQuestion {
   required: boolean;
   placeholder?: string;
   helperText?: string;
-  dependsOn?: string;
+  dependsOn?: string; // Question ID this depends on
 }
 
 export interface AgentTemplate {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon: string; // Icon name for UI
   systemPrompt: string;
   initialMessage: string;
   questions: AgentQuestion[];
@@ -32,11 +32,3 @@ export interface AgentContext {
     constraints: string[];
   };
 }
-
-// Backwards-compatible minimal agent type used by session page
-export type LegacyAgentTemplate = {
-  type: string;
-  name: string;
-  systemPrompt?: string;
-  initialMessage?: string;
-};
