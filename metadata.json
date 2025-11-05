@@ -1,0 +1,43 @@
+{
+  "name": "AppStarter",
+  "description": "A versatile starter template for building SaaS applications, AI agents, portfolios, and landing pages. Features modern UI with Tailwind CSS and shadcn/ui, Better Auth integration, and Cloudflare Workers backend with Hono and Drizzle ORM.",
+  "categories": [
+    "programming",
+    "productivity"
+  ],
+  "keywords": [
+    "React",
+    "Vite",
+    "Tailwind CSS",
+    "Cloudflare Workers",
+    "Hono",
+    "Drizzle ORM",
+    "Better Auth",
+    "React Router",
+    "TanStack Query",
+    "shadcn/ui",
+    "Landing Page",
+    "Starter Template"
+  ],
+  "main_pages": [
+    "landing",
+    "sign-in",
+    "sign-up"
+  ],
+  "features": [
+    "Beautiful landing page with hero, features, and CTA sections",
+    "Email/password authentication (Better Auth)",
+    "Polished sign-in and sign-up forms with validation",
+    "SPA routing (React Router)",
+    "Cloudflare Workers API with Hono",
+    "Protected routes and session middleware",
+    "Token-based theming with Tailwind CSS variables",
+    "Reusable shadcn/ui components",
+    "TanStack Query client integration",
+    "Responsive design with mobile-first approach"
+  ],
+  "target_audience": "Web developers and product teams building modern SPAs with authentication on Cloudflare.",
+  "content_type": "starter_template",
+  "visual_theme": "Clean, modern landing page with a professional design system. Uses OKLCH color palette, rounded corners, subtle shadows, and accessible components. Fully responsive with smooth transitions.",
+  "functionality": "Complete authentication flow with Better Auth, beautiful landing page for first impressions, client-side routing, form validation with Zod, and a Cloudflare Workers backend (Hono) with protected API routes and CORS support."
+}

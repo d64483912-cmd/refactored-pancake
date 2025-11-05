@@ -1,0 +1,21 @@
+{
+  "site": {
+    "name": "Minimal Starter",
+    "tagline": "Your Creative Canvas",
+    "description": "A clean, minimal starter template providing the perfect foundation for your next project. Built with modern tools and ready for your creativity.",
+    "ogImage": "/og-image.png",
+    "twitterHandle": "",
+    "contact": {
+      "email": "contact@example.com",
+      "company": "Your Company",
+      "address": ""
+    },
+    "legal": {
+      "privacyPolicy": "/privacy",
+      "termsOfService": "/terms"
+    }
+  },
+  "theme": {
+    "defaultTheme": "dark"
+  }
+}

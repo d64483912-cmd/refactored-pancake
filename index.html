@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Primary metadata - will be updated by SEO utilities in SPA -->
+    <title>AppStarter - Build Any Application</title>
+    <meta name="description" content="A versatile starter template for building SaaS applications, AI agents, portfolios, and landing pages with modern web technologies and best practices." />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AppStarter - Build Any Application" />
+    <meta property="og:description" content="A versatile starter template for building SaaS applications, AI agents, portfolios, and landing pages with modern web technologies and best practices." />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="AppStarter - Build Any Application" />
+    <meta property="twitter:description" content="A versatile starter template for building SaaS applications, AI agents, portfolios, and landing pages with modern web technologies and best practices." />
+    <meta property="twitter:image" content="/og-image.png" />
+    
+    <meta name="theme-color" content="oklch(0.21 0.006 285.885)" />
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('theme');
+          var theme = stored === 'dark' || stored === 'light' ? stored : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
