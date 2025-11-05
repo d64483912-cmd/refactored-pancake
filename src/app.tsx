@@ -1,16 +1,16 @@
 import RequireAuth from "@/components/RequireAuth";
 import RequireAdmin from "@/components/RequireAdmin";
+import Navigation from "@/components/Navigation";
 import Billing from "@/pages/billing";
 import BillingSuccess from "@/pages/billing-success";
 import Chat from "@/pages/chat";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
-import SignIn from "@/pages/sign-in";
-import SignUp from "@/pages/sign-up";
-import Navigation from "@/components/Navigation";
 import AgentsPage from "@/pages/agents";
 import AgentChatPage from "@/pages/agents/chat";
 import Session from "@/pages/session";
+import SignIn from "@/pages/sign-in";
+import SignUp from "@/pages/sign-up";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export function App() {
