@@ -7,6 +7,7 @@ import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
+import Session from "@/pages/session";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export function App() {
@@ -43,6 +44,16 @@ export function App() {
           element={
             <RequireAuth>
               <Chat />
+            </RequireAuth>
+          }
+        />
+
+        {/* Session route */}
+        <Route
+          path="/new/:sessionId"
+          element={
+            <RequireAuth>
+              <Session />
             </RequireAuth>
           }
         />
