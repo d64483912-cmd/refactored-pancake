@@ -7,11 +7,10 @@ declare namespace Cloudflare {
 	}
 	interface Env {
 		VITE_BETTER_AUTH_URL: "http://localhost:5173";
-		RUNABLE_GATEWAY_URL: "http://localhost:8080/gateway/v1";
 		BETTER_AUTH_SECRET: string;
 		BETTER_AUTH_URL: string;
 		AUTUMN_SECRET_KEY: string;
-		RUNABLE_SECRET: string;
+		OPENROUTER_API_KEY: string;
 		ADMIN_EMAIL: string;
 		D1: D1Database;
 		ASSETS: Fetcher;
@@ -22,7 +21,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "VITE_BETTER_AUTH_URL" | "RUNABLE_GATEWAY_URL" | "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL" | "AUTUMN_SECRET_KEY" | "RUNABLE_SECRET" | "ADMIN_EMAIL">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "VITE_BETTER_AUTH_URL" | "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL" | "AUTUMN_SECRET_KEY" | "OPENROUTER_API_KEY" | "ADMIN_EMAIL">> {}
 }
 
 // Begin runtime types

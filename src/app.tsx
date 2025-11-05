@@ -5,10 +5,10 @@ import BillingSuccess from "@/pages/billing-success";
 import Chat from "@/pages/chat";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
-import SessionDashboard from "@/components/session/SessionDashboard";
 import SignIn from "@/pages/sign-in";
 import SignUp from "@/pages/sign-up";
 import Navigation from "@/components/Navigation";
+import Session from "@/pages/session";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export function App() {
@@ -52,12 +52,12 @@ export function App() {
               }
             />
 
-            {/* Session Dashboard */}
+            {/* Session route */}
             <Route
-              path="/sessions"
+              path="/new/:sessionId"
               element={
                 <RequireAuth>
-                  <SessionDashboard />
+                  <Session />
                 </RequireAuth>
               }
             />
