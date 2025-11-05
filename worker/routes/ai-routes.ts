@@ -67,13 +67,20 @@ export const aiRoutes = new Hono<HonoContext>()
     try {
       const body = await c.req.json();
 
-      const { messages, model = "gpt-5-nano" } = body as {
+      const { messages, model = "gpt-5-nano", systemPrompt, sessionId } = body as {
         messages: UIMessage[];
         model?: string;
+        systemPrompt?: string;
+        sessionId?: string;
       };
 
       if (!messages || !Array.isArray(messages)) {
         return c.json({ error: "Messages array is required" }, 400);
+      }
+
+      let finalMessages = messages;
+      if (systemPrompt) {
+        finalMessages = [{ role: 'system', content: systemPrompt } as UIMessage, ...messages];
       }
 
       // Get gateway configuration from environment
@@ -94,7 +101,7 @@ export const aiRoutes = new Hono<HonoContext>()
       });
 
       // Convert UIMessages to ModelMessages for streamText
-      const modelMessages = convertToModelMessages(messages);
+      const modelMessages = convertToModelMessages(finalMessages);
 
       if (!c.get("user") || !c.get("user")?.id) {
         return c.json({ error: "User not authenticated" }, 401);
