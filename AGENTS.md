@@ -529,9 +529,8 @@ bun run pre-deploy  # Creates migration files
 
 ## AI
 
-Configure the gateway via environment variables (see `.env.example`):
-- RUNABLE_GATEWAY_URL: AI Gateway URL
-- RUNABLE_GATEWAY_SECRET: Gateway secret key
+Configure the AI gateway via environment variables (see `.env.example`):
+- OPENROUTER_API_KEY: OpenRouter API key (get from https://openrouter.ai/keys)
 
 ### API Routes
 
@@ -543,7 +542,7 @@ POST /api/ai/chat - Streaming chat completions
   "messages": [
     { "role": "user", "content": "Hello!" }
   ],
-  "model": "gpt-5"
+  "model": "meta-llama/llama-3.2-3b-instruct:free"
 }
 ```
 
@@ -551,15 +550,19 @@ GET /api/ai/models - Available AI models
 ```json
 {
   "models": [
-    { "id": "gpt-5", "name": "GPT-5", "provider": "openai" }
+    { "id": "meta-llama/llama-3.2-3b-instruct:free", "name": "Llama 3.2 3B", "provider": "meta" }
   ]
 }
 ```
 
 ### Supported Models
 
-- gpt-5, gpt-5-codex, gpt-5-mini, gpt-5-nano
-- claude-4, claude-4.5-sonnet
+- meta-llama/llama-3.2-3b-instruct:free
+- google/gemma-2-9b-it:free
+- microsoft/phi-3-mini-128k-instruct:free
+- meta-llama/llama-3.1-8b-instruct:free
+- nousresearch/hermes-3-llama-3.1-405b:free
+- google/gemini-flash-1.5:free
 
 ### Frontend Integration
 
@@ -782,7 +785,7 @@ Change model in src/pages/chat.tsx:
 ```typescript
 useChat({
   body: {
-    model: 'claude-4', // or 'gpt-5', 'gpt-5-mini'
+    model: 'meta-llama/llama-3.2-3b-instruct:free', // or any other OpenRouter free model
   },
 });
 ```

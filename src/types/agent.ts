@@ -32,3 +32,11 @@ export interface AgentContext {
     constraints: string[];
   };
 }
+
+// Backwards-compatible minimal agent type used by session page
+export type LegacyAgentTemplate = {
+  type: string;
+  name: string;
+  systemPrompt?: string;
+  initialMessage?: string;
+};
